@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #f7f7f7;
+        }
+
+        .card {
+            max-width: 640px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        #saludo {
+            font-size: 1.1rem;
+            color: #1f2937;
+            min-height: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Barber Service</h1>
+    <p id="saludo">Cargando saludo...</p>
+</div>
+
+<script>
+    async function cargarSaludoInicio() {
+        const nombre = localStorage.getItem('nombreUsuario') || 'cliente';
+        const endpoint = '/api/saludo/inicio?nombre=' + encodeURIComponent(nombre) + '&t=' + Date.now();
+
+        try {
+            const respuesta = await fetch(endpoint, { cache: 'no-store' });
+            const saludo = await respuesta.text();
+            document.getElementById('saludo').textContent = saludo;
+        } catch (error) {
+            document.getElementById('saludo').textContent = 'Hola, bienvenido a Barber Service.';
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', cargarSaludoInicio);
+</script>
+</body>
+</html>
+
